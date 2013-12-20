@@ -110,14 +110,14 @@ public class ProxyServlet extends HttpServlet {
 		String hcParamName = ClientPNames.HANDLE_REDIRECTS;
 		hcParams.setParameter(hcParamName,ReflectUtils.invokeValueOfOnString(getServletConfig().getInitParameter(hcParamName), Boolean.class));
 		proxyClient = createHttpClient(hcParams);
-	}	
-	
+	}
+
 	/** Called from {@link #init(javax.servlet.ServletConfig)}. HttpClient offers many opportunities
 	 * for customization.*/
 	protected HttpClient createHttpClient(HttpParams hcParams) {
 		return new DefaultHttpClient(new ThreadSafeClientConnManager(),hcParams);
 	}
-	
+
 	@Override
 	public void destroy() {
 		//shutdown() must be called according to documentation.
@@ -152,11 +152,11 @@ public class ProxyServlet extends HttpServlet {
 			log("proxy " + method + " uri: " + servletRequest.getRequestURI() + " -- " + proxyRequest.getRequestLine().getUri());
 		}
 
-		sendProxyRequestToBackend(proxyRequest, servletRequest, servletResponse);   
+		sendProxyRequestToBackend(proxyRequest, servletRequest, servletResponse);
 	}
 
 	@SuppressWarnings("deprecation")
-	protected void sendProxyRequestToBackend(final HttpRequest proxyRequest, final HttpServletRequest servletRequest, 
+	protected void sendProxyRequestToBackend(final HttpRequest proxyRequest, final HttpServletRequest servletRequest,
 			final HttpServletResponse servletResponse) throws ServletException, IOException {
 		try {
 			// Execute the request
@@ -189,7 +189,7 @@ public class ProxyServlet extends HttpServlet {
 			if (e instanceof IOException)
 				throw (IOException) e;
 			throw new RuntimeException(e);
-		}	
+		}
 	}
 
 	protected boolean doResponseRedirectOrNotModifiedLogic(

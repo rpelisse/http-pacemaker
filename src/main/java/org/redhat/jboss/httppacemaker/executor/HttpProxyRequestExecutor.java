@@ -18,14 +18,14 @@ public class HttpProxyRequestExecutor {
 
 	private final static String POOL_SIZE_PARAMETER_NAME = "org.redhat.jboss.httppacemaker.executor.poolsize";
 	private final static String SLEEP_TIME_PARAMETER_NAME = "org.redhat.jboss.httppacemaker.executor.sleepTime";
-	
+
 	private final static String DEFAULT_POOL_SIZE = "1";
 	private final static String DEFAULT_SLEEP_TIME = "0";
-	private ExecutorService executor;	
+	private ExecutorService executor;
 
 	private int nbThread;
 	private int sleepTime;
-	
+
 	@PostConstruct
 	public void init() {
 		this.nbThread = Integer.valueOf(retrieveParameterValue(POOL_SIZE_PARAMETER_NAME, DEFAULT_POOL_SIZE));
@@ -39,7 +39,7 @@ public class HttpProxyRequestExecutor {
 			return defaultValue;
 		return parameterValue;
 	}
-	
+
 	public HttpResponse pushRequestToBackend(Callable<HttpResponse> request) {
 		System.out.println("ObjectId:" + this.hashCode());
 	    Future<HttpResponse> submit = executor.submit(request);
@@ -61,13 +61,13 @@ public class HttpProxyRequestExecutor {
 	    	throw new RuntimeErrorException(new Error("HTTP response returned was 'null' !"));
 	    return response;
 	}
-	
+
 	private void waitBeforeSendingReply() {
 		try {
 			Thread.sleep(this.sleepTime);
 		} catch (InterruptedException e) {
 			//FIXME: this should be logged
-		}		
+		}
 	}
 
 	public void preDestroy() {
